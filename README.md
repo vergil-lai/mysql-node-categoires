@@ -120,4 +120,5 @@ pre_common_district.sql 文件为[Discuz! X](http://www.comsenz.com/products/dis
 
 导入测试数据：
 
-	INSERT INTO `category` (`parent_id`, `level`, `name`) SELECT `upid`, `level`, `name` FROM `pre_common_district`;
+	INSERT INTO `category` (`parent_id`, `level`, `name`) 
+	SELECT `upid`, `level`, `name` FROM `pre_common_district`;
