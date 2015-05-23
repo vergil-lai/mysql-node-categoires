@@ -6,7 +6,7 @@ DROP TRIGGER IF EXISTS `after_insert_category`;
 
 DELIMITER $$
 
--- BEFORE ISERT 触发器 
+-- BEFORE INSERT 触发器 
 -- 顶级分类默认level字段值为1
 -- 如果新添加的记录不是顶级分类，那么新level应该为父节点的level + 1
 CREATE TRIGGER `before_insert_category` BEFORE INSERT ON `category` FOR EACH ROW
