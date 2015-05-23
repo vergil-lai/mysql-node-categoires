@@ -107,11 +107,11 @@ _可根据需要自行修改 ，修改表名需要同时修改触发器内的表
 
 ## 触发器
 
-* before_insert_category 主要用于计算level字段，如果没有这个字字段则不需要，可选
-* after_insert_category 用于创建node_index，必要
-* before_update_category 主要用于计算level字段，如果没有这个字字段则不需要，可选
-* after_update_category 用于更新node_index，必要
-* after_delete_category 删除子分类，必要
+* before_insert_category 用于计算level字段
+* after_insert_category 用于创建node_index
+* before_update_category 用于更新level字段和检查新的节点是否为自己的子节点
+* after_update_category 用于更新本身及属下节点的node_index
+* after_delete_category 删除子分类
 
 
 ## 测试数据
