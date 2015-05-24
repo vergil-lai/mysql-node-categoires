@@ -12,9 +12,15 @@ DELIMITER $$
 CREATE TRIGGER `before_insert_category` BEFORE INSERT ON `category` FOR EACH ROW
 BEGIN
 	DECLARE lv SMALLINT;
+	DECLARE c SMALLINT;
 	IF NEW.parent_id > 0 THEN
-		SELECT `level` + 1 INTO lv FROM `category` WHERE `id` = NEW.parent_id;
-		SET NEW.level = lv;
+		SELECT `level` + 1, COUNT(1) INTO lv, c FROM `category` WHERE `id` = NEW.parent_id;
+		IF c = 0 THEN
+			-- 父节点不存在，抛出异常
+			INSERT INTO `parent_id_not_exists` VALUES(1);
+		ELSE
+			SET NEW.level = lv;
+		END IF;
 	END IF;
 
 END;

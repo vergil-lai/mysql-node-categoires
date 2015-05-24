@@ -11,6 +11,7 @@ DELIMITER $$
 CREATE TRIGGER `before_update_category` BEFORE UPDATE ON `category` FOR EACH ROW
 BEGIN
 	DECLARE lv SMALLINT;
+	DECLARE c SMALLINT;
 	DECLARE self_node VARCHAR(500);
 	DECLARE pos INT;
 
@@ -20,7 +21,12 @@ BEGIN
 		ELSE
 			-- 检查上级节点是否自己的子节点
 			SELECT `node_index` INTO self_node FROM `category_node_index` WHERE `id` = OLD.id;
-			SELECT POSITION(self_node IN `node_index`) INTO pos FROM `category_node_index` WHERE `id` = NEW.parent_id;
+			SELECT POSITION(self_node IN `node_index`), COUNT(1) INTO pos, c FROM `category_node_index` WHERE `id` = NEW.parent_id;
+
+			IF c = 0 THEN
+				-- 父节点不存在，抛出异常
+				INSERT INTO `parent_id_not_exists` VALUES(1);
+			END IF;
 
 			IF pos > 0 THEN
 				-- 如果新的父节点是自己的子节点

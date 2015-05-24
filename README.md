@@ -105,13 +105,26 @@ _可根据需要自行修改 ，修改表名需要同时修改触发器内的表
 	  FULLTEXT KEY `idx_node_index` (`node_index`)
 	) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+## 视图
+* category_has_node category表和category_node_index内联查询
+
 ## 触发器
 
-* before_insert_category 用于计算level字段
+* before_insert_category 用于计算level字段和检查父节点id是否存在
 * after_insert_category 用于创建node_index
 * before_update_category 用于更新level字段和检查新的节点是否为自己的子节点
 * after_update_category 用于更新本身及属下节点的node_index
-* after_delete_category 删除子分类
+
+## 存储过程
+
+_由于MySQL触发器不能操作本表，无法删除同一个表内的数据和递归删除，暂时没有太好的解决方法，暂时先用存储过程实现_
+
+* delete_category_procedure 删除节点及所有子节点
+
+调用：
+
+	CALL delete_category_procedure(parent_id);
+
 
 
 ## 测试数据
